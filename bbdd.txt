@@ -1,0 +1,57 @@
+INSERT INTO Coches VALUES (1, 'Corolla', 'Toyota', 'Blanco', 20000, 1, NULL);
+INSERT INTO Coches VALUES (2, 'Civic', 'Honda', 'Negro', 22500, 0, NULL);
+INSERT INTO Coches VALUES (3, 'Mustang', 'Ford', 'Rojo', 36000, 1, NULL);
+INSERT INTO Coches VALUES (4, 'Camaro', 'Chevrolet', 'Azul', 38000, 1, NULL);
+INSERT INTO Coches VALUES (5, 'Serie 3', 'BMW', 'Gris metalico', 42000, 0, NULL);
+INSERT INTO Coches VALUES (6, 'A4', 'Audi', 'Blanco perlado', 41500, 0, NULL);
+INSERT INTO Coches VALUES (7, 'Clase C', 'Mercedes-Benz', 'Negro brillante', 45000, 0, NULL);
+INSERT INTO Coches VALUES (8, 'Elantra', 'Huyndai', 'Plata', 18500, 0, NULL);
+INSERT INTO Coches VALUES (9, 'Spostage', 'Kia', 'Rojo orcuro', 25000, 1, NULL);
+INSERT INTO Coches VALUES (10, 'Model 3', 'Tesla', 'Blanco', 40000, 1, NULL);
+INSERT INTO Coches VALUES (11, 'Altima', 'Nissan', 'Negro', 24500, 1, NULL);
+
+
+INSERT INTO Usuarios VALUES (1, 'pass1234', 'Carlos', 'García López', '12345678A', '1250.50');
+INSERT INTO Usuarios VALUES (2, 'mysecurepwd', 'Ana', 'Martínez Pérez', '87654321B', '2300.00');
+INSERT INTO Usuarios VALUES (3, 'qwerty2024', 'Laura', 'Gómez Rodríguez', '11223344C', '540.00');
+INSERT INTO Usuarios VALUES (4, 'abcDEF321', 'Miguel', 'Fernández Ruiz', '33445566D', '3200.75');
+INSERT INTO Usuarios VALUES (5, 'sunshine987', 'Marta', 'López Sánchez', '44556677E', '980.20');
+INSERT INTO Usuarios VALUES (6, 'password2023', 'Luis', 'Romero Torres', '55667788F', '1800.00');
+INSERT INTO Usuarios VALUES (7, 'rocksolid45', 'Julia', 'Navarro Gómez', '66778899G', '750.30');
+INSERT INTO Usuarios VALUES (8, 'flowerpower01', 'Sara', 'Domínguez Morales', '77889900H', '1120.50 ');
+INSERT INTO Usuarios VALUES (9, 'hunterXhunter', 'David', 'Vargas Ruiz', '88990011J', '5000.00');
+INSERT INTO Usuarios VALUES (10, 'secureme987', 'Elena', 'Ortiz Herrera', '99001122K', '600.00');
+
+
+INSERT INTO Alquileres VALUES (1, 5, 7, '2024-01-05 10:30:00', '2024-01-15 15:45:00');
+INSERT INTO Alquileres VALUES (2, 1, 3, '2024-02-10 09:15:00', '2024-02-20 14:00:00');
+INSERT INTO Alquileres VALUES (3, 4, 6, '2024-03-01 11:20:00', '2024-03-10 16:30:00');
+INSERT INTO Alquileres VALUES (4, 8, 2, '2024-03-15 08:50:00', '2024-03-25 13:25:00');
+INSERT INTO Alquileres VALUES (5, 11, 9, '2024-04-01 14:10:00', '2024-04-12 18:40:00');
+INSERT INTO Alquileres VALUES (6, 3, 4, '2024-04-20 10:45:00', '2024-05-01 17:15:00');
+INSERT INTO Alquileres VALUES (7, 2, 1, '2024-05-10 09:30:00', '2024-05-20 14:55:00');
+INSERT INTO Alquileres VALUES (8, 6, 8, '2024-06-05 13:00:00', '2024-06-15 19:20:00');
+INSERT INTO Alquileres VALUES (9, 8, 10, '2024-06-25 08:15:00', '2024-07-05 12:35:00');
+INSERT INTO Alquileres VALUES (10, 9, 5, '2024-07-10 11:50:00', '2024-07-20 16:45:00');
+
+INSERT INTO Alquileres VALUES (11, 6, 8, '2024-06-05 13:00:00', '2024-06-15 19:20:00');
+INSERT INTO Alquileres VALUES (12, 8, 10, '2024-06-25 08:15:00', '2024-07-05 12:35:00');
+INSERT INTO Alquileres VALUES (13, 9, 5, '2024-07-10 11:50:00', '2024-07-20 16:45:00');
+
+
+
+select a.id_alquiler, u.nombre, c.marca, c.modelo, a.prestado, a.devuelto from alquileres a, usuarios u, coches c
+where a.id_usuario = u.id_usuario
+and a.id_coche = c.id_coche;
+
+INSERT INTO coches (modelo, marca, color, precio, alquilado, foto) VALUES ('$modelo', '$marca', '$color', '$precio', '$alquilado', '$foto')
+
+SELECT * FROM coches 
+WHERE marca = '$marca'
+OR modelo = '$modelo'
+OR color = '$color'
+OR precio = '$precio'
+
+
+
+
