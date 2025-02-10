@@ -76,8 +76,8 @@
 <body>
 
     <div class="auth-buttons">
-        <button onclick="location.href='login.html'">Iniciar Sesión</button>
-        <button onclick="location.href='register.html'">Regístrate</button>
+        <button onclick="location.href='login.php'">Iniciar Sesión</button>
+        <button onclick="location.href='register.php'">Regístrate</button>
     </div>
 
     <h1>Nuestros coches</h1>

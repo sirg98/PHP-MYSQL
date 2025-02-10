@@ -233,6 +233,7 @@
             print ("<th>Apellidos</th>\n");
             print ("<th>DNI</th>\n");
             print ("<th>Saldo</th>\n");
+            print ("<th>Tipo</th>\n");
             print ("</tr>\n");
 
             for ($i = 0; $i < $nfilas; $i++) 
@@ -244,6 +245,7 @@
                 print ("<td>" . $resultado['apellidos'] . "</td>\n");
                 print ("<td>" . $resultado['dni'] . "</td>\n");
                 print ("<td>" . $resultado['saldo'] . "</td>\n");
+                print ("<td>" . $resultado['tipo'] . "</td>\n");
                 print ("</tr>\n");
             }
 
