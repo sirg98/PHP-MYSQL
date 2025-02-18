@@ -1,3 +1,17 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+session_start(); // Iniciar sesión
+
+// Verificar si el usuario está autenticado
+if (!isset($_SESSION['nombre'])) {
+    header("Location: login.php?error=Debe iniciar sesión");
+    exit();
+}
+
+$nombre = $_SESSION['nombre']; 
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -21,12 +35,28 @@
             background-color: rgba(29, 29, 29, 0.9); 
             padding: 20px;
             text-align: center;
+            position: relative;
         }
 
         h1 {
             font-size: 2.5rem;
             color: #FFFFFF;
             text-transform: uppercase;
+        }
+
+        .logout {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background-color: red;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .logout a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
         }
 
         .menu-lateral {
@@ -68,18 +98,6 @@
             display: block;
         }
 
-        .menu-lateral .dropdown a {
-            padding: 15px;
-            font-size: 1.2rem;
-            color: white;
-            text-decoration: none;
-            border-bottom: 1px solid #6A0DAD;
-        }
-
-        .menu-lateral .dropdown a:hover {
-            background-color: #8A2BE2;
-        }
-
         .main-content {
             margin-left: 250px;
             padding: 20px;
@@ -111,7 +129,10 @@
 <body>
 
     <header>
-        <h1>¡Bienvenido, root!</h1>
+        <h1>¡Bienvenido, <?php echo htmlspecialchars($nombre); ?>!</h1>
+        <div class="logout">
+            <a href="logout.php">Cerrar sesión</a>
+        </div>
     </header>
 
     <div class="menu-lateral">
@@ -149,7 +170,6 @@
     <div class="main-content">
         <h2>Bienvenido al Concesionario</h2>
         <p>En esta página podrás consultar todas las opciones disponibles.</p>
-        <p>¿Qué vas a encontrar?</p>
         <ul>
             <li>COCHES</li>
             <ul>
