@@ -108,7 +108,7 @@ if (!isset($_SESSION['nombre'])) {
 
     <div class="main-content">
         <h2>Bienvenido al Concesionario</h2>
-        <p>En esta página podrás gestionar los coches disponibles.</p>
+        <p>En esta página podrás gestionar tus coches, podrás añadirlos, borrarlos y listarlos.</p>
     </div>
 
 </body>

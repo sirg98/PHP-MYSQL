@@ -1,3 +1,25 @@
+<?php
+session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Verificar si el usuario ha iniciado sesión
+if (!isset($_SESSION['nombre'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$conn = mysqli_connect("localhost", "root", "rootroot", "concesionario");
+
+if (!$conn) {
+    die("Error de conexión: " . mysqli_connect_error());
+}
+
+$sql = "SELECT * FROM Coches
+        WHERE propietario = ?";
+$result = mysqli_query($conn, $sql);
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -38,49 +60,6 @@
         }
 
         .menu-lateral a:hover {
-            background-color: #8A2BE2;
-        }
-
-        .menu-lateral .dropdown-content {
-            display: none;
-            background-color: #333;
-            border-left: 3px solid #6A0DAD;
-        }
-
-        .menu-lateral .dropdown-content a {
-            padding-left: 30px;
-        }
-
-        .menu-lateral .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .menu-lateral .dropdown a {
-            padding: 15px;
-            font-size: 1.2rem;
-            color: white;
-            text-decoration: none;
-            border-bottom: 1px solid #6A0DAD;
-        }
-
-        .menu-lateral .dropdown a:hover {
-            background-color: #8A2BE2;
-        }
-
-        .menu-lateral .main-button {
-            background-color: #6A0DAD;
-            color: #fff;
-            font-size: 1.2rem;
-            text-align: center;
-            border: none;
-            padding: 15px;
-            cursor: pointer;
-            width: 100%;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
-
-        .menu-lateral .main-button:hover {
             background-color: #8A2BE2;
         }
 
@@ -134,6 +113,7 @@
 
         img {
             border-radius: 5px;
+            width: 100px;
         }
 
         p {
@@ -159,7 +139,7 @@
 </head>
 <body>
 
-<div class="menu-lateral">
+    <div class="menu-lateral">
         <a href="añadircoches.html">Añadir Coche</a>
         <a href="borrarcoches.php">Borrar Coche</a>
         <a href="listarcoches.php">Listar Coches</a>
@@ -169,49 +149,33 @@
         <h1>Listado de coches</h1>
 
         <?php
+        if (mysqli_num_rows($result) > 0) {
+            echo "<table>";
+            echo "<tr>
+                <th>Id</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Color</th>
+                <th>Precio</th>
+                <th>Alquilado</th>
+                <th>Foto</th>
+            </tr>";
 
-        $conn = mysqli_connect("localhost", "root", "rootroot") 
-            or die("No se puede conectar con el servidor");
-
-        mysqli_select_db($conn, "concesionario") 
-            or die("No se puede seleccionar la base de datos");
-
-        $sql = "SELECT * FROM Coches";
-        $result = mysqli_query($conn, $sql) 
-            or die("Fallo en la consulta");
-
-            $nfilas = mysqli_num_rows($result);
-            if ($nfilas > 0) 
-            {
-                echo "<table>";
+            while ($row = mysqli_fetch_assoc($result)) {
                 echo "<tr>
-                    <th>Id</th>
-                    <th>Marca</th>
-                    <th>Modelo</th>
-                    <th>Color</th>
-                    <th>Precio</th>
-                    <th>Alquilado</th>
-                    <th>Foto</th>
+                    <td>{$row['id_coche']}</td>
+                    <td>{$row['marca']}</td>
+                    <td>{$row['modelo']}</td>
+                    <td>{$row['color']}</td>
+                    <td>{$row['precio']}</td>
+                    <td>{$row['alquilado']}</td>
+                    <td><img src='../img/{$row['foto']}'></td>
                 </tr>";
-    
-                while ($resultado = mysqli_fetch_array($result)) 
-                {
-                    echo "<tr>
-                        <td>{$resultado['id_coche']}</td>
-                        <td>{$resultado['marca']}</td>
-                        <td>{$resultado['modelo']}</td>
-                        <td>{$resultado['color']}</td>
-                        <td>{$resultado['precio']}</td>
-                        <td>{$resultado['alquilado']}</td>
-                        <td><img src='../../img/{$resultado['foto']}' style='width:100px;'></td>
-                    </tr>";
-                }
-                echo "</table>";
-            } 
-            else 
-            {
-                echo "<p>No hay coches disponibles.</p>";
             }
+            echo "</table>";
+        } else {
+            echo "<p>No hay coches disponibles.</p>";
+        }
 
         mysqli_close($conn);
         ?>
