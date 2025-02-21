@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+$id = $_SESSION['id_usuario'];
+
+if (!isset($_SESSION['nombre'])) {
+    header("Location: login.php"); 
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,7 +16,7 @@
     <title>INSERTAR COCHE</title>
     <style>
         body {font-family: 'Arial', sans-serif;
-            background: url('../../img/deportivo.jpg') no-repeat center center fixed;
+            background: url('../img/deportivo.jpg') no-repeat center center fixed;
             background-size: cover;
             color: #FFFFFF;
             margin: 0;
@@ -22,32 +32,23 @@
                     height: 100%;
                     padding-top: 20px;
                     z-index: 1000;
-                    border-right: 2px solid #6A0DAD;}
+                    border-right: 2px solid #6A0DAD;
+                    text-align: center;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;}
 
         .menu-lateral a {display: block;
+                        width: 90%;
                         padding: 15px;
                         text-decoration: none;
                         color: #fff;
                         font-size: 1.2rem;
-                        border-bottom: 1px solid #6A0DAD;}
+                        border-bottom: 1px solid #6A0DAD;
+                        text-align: center;
+                        border-radius: 5px;}
 
         .menu-lateral a:hover {background-color: #8A2BE2;}
-
-        .menu-lateral .dropdown-content {display: none;
-                                        background-color: #333;
-                                        border-left: 3px solid #6A0DAD;}
-
-        .menu-lateral .dropdown-content a {padding-left: 30px;}
-
-        .menu-lateral .dropdown:hover .dropdown-content {display: block;}
-
-        .menu-lateral .dropdown a {padding: 15px;
-                                font-size: 1.2rem;
-                                color: white;
-                                text-decoration: none;
-                                border-bottom: 1px solid #6A0DAD;}
-
-        .menu-lateral .dropdown a:hover {background-color: #8A2BE2;}
 
         .menu-lateral .main-button {background-color: #6A0DAD;
                                     color: #fff;
@@ -56,11 +57,33 @@
                                     border: none;
                                     padding: 15px;
                                     cursor: pointer;
-                                    width: 100%;
-                                    margin-bottom: 20px;
-                                    border-radius: 5px;}
+                                    width: 90%;
+                                    margin: 10px 0;
+                                    border-radius: 5px;
+                                    display: block;
+                                    text-decoration: none;}
 
         .menu-lateral .main-button:hover {background-color: #8A2BE2;}
+
+        .menu-lateral .logout-button {
+            background-color: #28A745;
+            color: #fff;
+            font-size: 1.2rem;
+            text-align: center;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            width: 90%;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: block;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .menu-lateral .logout-button:hover {
+            background-color: #218838;
+        }
 
         .main-content {margin-left: 250px;
                     padding: 20px;
@@ -121,47 +144,21 @@
                                                 padding-top: 10px;}
 
                                     .main-content {margin-left: 0;}}
-
     </style>
 </head>
 <body>
 
-    <div class="menu-lateral">
-        <button class="main-button" onclick="location.href='../2index.php'">Ir a la Principal</button>
+<div class="menu-lateral">
+    <a href="3index.php" class="main-button">🏠 Volver al Inicio</a>
+    <a href="añadircoches.php">Añadir Coche</a>
+    <a href="borrarcoches.php">Borrar Coche</a>
+    <a href="listarcoches.php">Listar Coches</a>
+    <a href="editar_usuario.php">Editar Usuario</a>
 
-        <div class="dropdown">
-            <a href="javascript:void(0)">Coches</a>
-            <div class="dropdown-content">
-                <a href="añadircoches.html">Añadir Coche</a>
-                <a href="listarcoches.php">Listar Coches</a>
-                <a href="buscarcoches.html">Buscar Coche</a>
-                <a href="modificarcoches.html">Modificar Coche</a>
-                <a href="borrarcoches.php">Borrar Coche</a>
-            </div>
-        </div>
-
-        <div class="dropdown">
-            <a href="javascript:void(0)">Usuarios</a>
-            <div class="dropdown-content">
-                <a href="../usuarios/añadirusuarios.html">Añadir Usuario</a>
-                <a href="../usuarios/listarusuarios.php">Listar Usuarios</a>
-                <a href="../usuarios/buscarusuarios.html">Buscar Usuario</a>
-                <a href="../usuarios/modificarusuarios.html">Modificar Usuario</a>
-                <a href="../usuarios/borrarusuarios.php">Borrar Usuario</a>
-            </div>
-        </div>
-
-        <div class="dropdown">
-            <a href="javascript:void(0)">Alquileres</a>
-            <div class="dropdown-content">
-                <a href="../alquileres/listaralquileres.php">Listar Alquileres</a>
-                <a href="../alquileres/borraralquileres.php">Borrar Alquileres</a>
-            </div>
-        </div>
-    </div>
+    <a href="../logout.php" class="logout-button">🚪 Cerrar Sesión</a>
+</div>
 
     <div class="main-content">
-        
         <form action="añadircoches2.php" method="post" enctype="multipart/form-data">
             <h2>Insertar coche</h2>
             <label for="marca">Marca:</label>
@@ -176,11 +173,7 @@
             <label for="color">Color:</label>
             <input type="text" name="color" id="color" required><br><br>
 
-            <label for="alquilado">Alquilado:</label>
-            <select name="alquilado">
-                <option value="si" name="1">Si</option>
-                <option value="no" name="0">No</option>
-            </select><br><br>
+            
 
             <label for="foto">Foto:</label>
             <input type="file" name="foto" id="foto" accept="image/*"><br><br>

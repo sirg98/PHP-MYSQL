@@ -2,20 +2,24 @@
 session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-$id = $_SESSION['id_usuario'];
 
 if (!isset($_SESSION['nombre'])) {
     header("Location: login.php");
     exit();
 }
 
+$id_usuario = $_SESSION['id_usuario'];
 $conn = mysqli_connect("localhost", "root", "rootroot", "concesionario");
 
 if (!$conn) {
     die("Error de conexión: " . mysqli_connect_error());
 }
 
-$sql = "SELECT * FROM Coches WHERE propietario = '$id'";
+$sql = "SELECT c.id_coche, c.marca, c.modelo, c.color, c.precio, c.foto, a.prestado, a.devuelto
+        FROM alquileres a
+        JOIN coches c ON a.id_coche = c.id_coche
+        WHERE a.id_usuario = '$id_usuario'";
+
 $result = mysqli_query($conn, $sql);
 ?>
 
@@ -24,7 +28,7 @@ $result = mysqli_query($conn, $sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listado de Coches</title>
+    <title>Mis Coches Alquilados</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -122,111 +126,92 @@ $result = mysqli_query($conn, $sql);
             margin-bottom: 20px;
         }
 
-        table {
+        .catalogo {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
             width: 80%;
-            margin: 0 auto;
-            border-collapse: collapse;
+            margin: auto;
+        }
+
+        .coche {
             background-color: rgba(0, 0, 0, 0.8);
             border-radius: 10px;
-            overflow: hidden;
-            color: #FFFFFF;
+            padding: 15px;
+            width: 250px;
+            text-align: center;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        th {
-            background-color: #6A0DAD;
-            color: white;
-            padding: 15px;
-            text-align: left;
+        .coche img {
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        .coche p {
+            margin: 10px 0;
             font-size: 1rem;
-        }
-
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #444;
-            text-align: left;
-        }
-
-        tr:nth-child(even) {
-            background-color: #111111;
-        }
-
-        tr:hover {
-            background-color: #6A0DAD;
             color: #FFFFFF;
         }
 
-        img {
+        .boton-devolver {
+            display: inline-block;
+            padding: 10px;
+            background-color: #FF0000;
+            color: white;
+            text-decoration: none;
             border-radius: 5px;
-            width: 100px;
+            font-size: 1rem;
+            margin-top: 10px;
         }
 
-        p {
-            text-align: center;
-            font-size: 1.2rem;
-            color: #BBBBBB;
-        }
-
-        @media (max-width: 768px) {
-            .menu-lateral {
-                width: 200px;
-            }
-
-            .main-content {
-                margin-left: 200px;
-            }
-
-            table {
-                width: 100%;
-            }
+        .boton-devolver:hover {
+            background-color: #CC0000;
         }
     </style>
 </head>
 <body>
 
     <div class="menu-lateral">
-        <a href="3index.php" class="main-button">🏠 Volver al Inicio</a>
-        <a href="añadircoches.php">Añadir Coche</a>
-        <a href="borrarcoches.php">Borrar Coche</a>
+        <a href="4index.php" class="main-button">🏠 Volver al Inicio</a>
         <a href="listarcoches.php">Listar Coches</a>
+        <a href="mis_coches.php">Mis Coches</a>
         <a href="editar_usuario.php">Editar Usuario</a>
         <a href="../logout.php" class="logout-button">🚪 Cerrar Sesión</a>
     </div>
 
     <div class="main-content">
-        <h1> Listado de Coches</h1>
+        <h1>Mis Coches Alquilados</h1>
 
-        <?php
-        if (mysqli_num_rows($result) > 0) {
-            echo "<table>";
-            echo "<tr>
-                <th>Id</th>
-                <th>Marca</th>
-                <th>Modelo</th>
-                <th>Color</th>
-                <th>Precio</th>
-                <th>Alquilado</th>
-                <th>Foto</th>
-            </tr>";
+        <div class="catalogo">
+            <?php
+            if (mysqli_num_rows($result) > 0) {
+                while ($coche = mysqli_fetch_assoc($result)) {
+                    echo "<div class='coche'>
+                        <img src='../img/{$coche['foto']}' alt='Foto de {$coche['modelo']}'>
+                        <p><strong>Marca:</strong> {$coche['marca']}</p>
+                        <p><strong>Modelo:</strong> {$coche['modelo']}</p>
+                        <p><strong>Color:</strong> {$coche['color']}</p>
+                        <p><strong>Precio:</strong> {$coche['precio']}€</p>
+                        <p><strong>Alquilado el:</strong> {$coche['prestado']}</p>";
 
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "<tr>
-                    <td>{$row['id_coche']}</td>
-                    <td>{$row['marca']}</td>
-                    <td>{$row['modelo']}</td>
-                    <td>{$row['color']}</td>
-                    <td>{$row['precio']} €</td>
-                    <td>" . ($row['alquilado'] ? '✅ Sí' : '❌ No') . "</td>
-                    <td><img src='../img/{$row['foto']}'></td>
-                </tr>";
+                    
+                    if (empty($coche['devuelto'])) {
+                        echo "<a href='devolver_coche.php?id_coche={$coche['id_coche']}' class='boton-devolver'>Devolver Coche</a>";
+                    } else {
+                        echo "<p><strong>Devuelto el:</strong> {$coche['devuelto']}</p>";
+                    }
+                    
+                    echo "</div>";
+                }
+            } else {
+                echo "<p>No has alquilado ningún coche.</p>";
             }
-            echo "</table>";
-        } else {
-            echo "<p>No hay coches disponibles.</p>";
-        }
 
-        mysqli_close($conn);
-        ?>
+            mysqli_close($conn);
+            ?>
+        </div>
     </div>
 
 </body>

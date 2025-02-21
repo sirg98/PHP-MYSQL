@@ -1,11 +1,19 @@
+<?php
+session_start();
+
+
+if (!isset($_SESSION['id_usuario'])) {
+    header("Location: login.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AÑADIR USUARIO</title>
+    <title>BORRAR USUARIO</title>
     <style>
-
         body {
             font-family: 'Arial', sans-serif;
             background: url('../../img/deportivo.jpg') no-repeat center center fixed;
@@ -16,6 +24,8 @@
             display: flex;
             min-height: 100vh;
             flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .menu-lateral {
@@ -86,98 +96,70 @@
             background-color: #8A2BE2;
         }
 
-        .main-content {
-            margin-left: 250px;
-            padding: 20px;
-            min-height: 100vh;
-            flex-grow: 1;
+        .menu-lateral .logout-button {
+            background-color: #28A745; 
+            color: #fff;
+            font-size: 1.2rem;
+            text-align: center;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            width: 88%;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: block;
+            text-decoration: none;
+            font-weight: bold;
         }
 
-        h2 {
-            font-size: 2rem;
-            color: #ffffff;
-            text-align: center;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+        .menu-lateral .logout-button:hover {
+            background-color: #218838; 
         }
         
-        form {
-            background-color: rgba(29, 29, 29, 0.9); 
-            padding: 30px;
+        .message-container {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            background-color: rgba(29, 29, 29, 0.8);
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
+            max-width: 500px;
         }
 
-        label {
-            font-size: 1rem;
-            color: #FFFFFF;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        input[type="text"], input[type="password"] {
-            width: 100%;
-            padding: 10px 12px;
+        .success-message {
+            font-size: 1.2rem;
+            color: #4CAF50;
             margin-bottom: 20px;
-            border: 1px solid #444;
-            border-radius: 5px;
-            background-color: #2D2D2D;
-            color: #FFFFFF;
-            font-size: 1rem;
-            box-sizing: border-box;
         }
 
-        input[type="submit"] {
-            background-color: #6A0DAD;
+        .error-message {
+            font-size: 1.2rem;
+            color: #FF5722; 
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            padding: 10px 20px;
             color: #FFFFFF;
-            border: none;
-            padding: 12px;
+            background-color: #6A0DAD;
+            text-decoration: none;
             font-size: 1rem;
-            cursor: pointer;
             border-radius: 5px;
-            width: 100%;
             transition: background-color 0.3s, transform 0.2s;
         }
 
-        input[type="submit"]:hover {
-            background-color: #8A2BE2; 
+        .back-link:hover {
+            background-color: #8A2BE2;
             transform: scale(1.05);
         }
-
-        @media (max-width: 768px) {
-            .menu-lateral {
-                width: 200px;
-                padding-top: 10px;
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
-
-            form {
-                padding: 20px;
-            }
-
-            h2 {
-                font-size: 1.8rem;
-            }
-
-            input[type="submit"] {
-                font-size: 0.9rem;
-            }
-        }
-
     </style>
 </head>
 <body>
 
     <div class="menu-lateral">
         <button class="main-button" onclick="location.href='../2index.php'">Ir a la Principal</button>
-
         <div class="dropdown">
             <a href="javascript:void(0)">Coches</a>
             <div class="dropdown-content">
@@ -188,7 +170,6 @@
                 <a href="../coches/borrarcoches.php">Borrar Coche</a>
             </div>
         </div>
-
         <div class="dropdown">
             <a href="javascript:void(0)">Usuarios</a>
             <div class="dropdown-content">
@@ -199,7 +180,6 @@
                 <a href="borrarusuarios.php">Borrar Usuario</a>
             </div>
         </div>
-
         <div class="dropdown">
             <a href="javascript:void(0)">Alquileres</a>
             <div class="dropdown-content">
@@ -207,31 +187,74 @@
                 <a href="../alquileres/borraralquileres.php">Borrar Alquileres</a>
             </div>
         </div>
+        <a href="../../logout.php" class="logout-button">🚪 Cerrar Sesión</a>
+
     </div>
 
-    <div class="main-content">
+    <?php
+
+    $servername = "localhost";
+    $username = "root";
+    $password = "rootroot";
+    $dbname = "concesionario";
+    $id = $_REQUEST['id_coche'];
+
+
+    $conn = mysqli_connect ($servername, $username, $password, $dbname);
+    if (!$conn)
+    {
+        die("Conexion fallida". mysqli_connect_error());
+    }
+
+    if (isset($_REQUEST['delete_ids']) && is_array($_REQUEST['delete_ids']))
+    {
+        $ids_to_delete = implode(",", array_map('intval', $_REQUEST['delete_ids']));
         
-        <form action="añadirusuarios2.php" method="post">
-            <h2>Añadir Usuario</h2>
-            <label for="nombre">Nombre: </label>
-            <input type="text" name="nombre" id="nombre" required><br><br>
-
-            <label for="apellidos">Apellidos:</label>
-            <input type="text" name="apellidos" id="apellidos" required><br><br>
-        
-            <label for="dni">DNI:</label>
-            <input type="text" name="dni" id="dni" required><br><br>
-
-            <label for="password">Contraseña:</label>
-            <input type="password" name="password" id="password" required><br><br>
-
-            <label for="saldo">Saldo:</label>
-            <input type="text" name="saldo" id="saldo" required><br><br>
-
-            <input type="submit" value="Insertar">
-
-        </form>
-    </div>
-    
+        $sql = "DELETE FROM usuarios WHERE id_usuario in ($ids_to_delete)";
+        echo "<div class='message-container'>";
+        if (mysqli_query($conn, $sql))
+        {
+            echo "<p class='success-message'>Usuarios eliminados correctamente</p>";
+        }
+        else 
+        {
+            echo "<p class='error-message'>Error al eliminar usuarios: " . mysqli_error($conn) . "</p>";
+        }
+    }
+    else
+    {
+        echo "<h1>No has seleccionado ningún usuario</h1>";
+    }
+    mysqli_close($conn);
+    echo "<a href='borrarusuarios.php' class='back-link'>Volver al listado</a>";
+    echo "</div>";
+?>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

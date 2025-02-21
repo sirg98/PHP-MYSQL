@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+
+if (!isset($_SESSION['id_usuario'])) {
+    header("Location: login.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,7 +15,7 @@
     <title>INSERTAR COCHE</title>
     <style>
         body {font-family: 'Arial', sans-serif;
-            background: url('../img/deportivo.jpg') no-repeat center center fixed;
+            background: url('../../img/deportivo.jpg') no-repeat center center fixed;
             background-size: cover;
             color: #FFFFFF;
             margin: 0;
@@ -62,6 +71,26 @@
 
         .menu-lateral .main-button:hover {background-color: #8A2BE2;}
 
+        .menu-lateral .logout-button {
+            background-color: #28A745; 
+            color: #fff;
+            font-size: 1.2rem;
+            text-align: center;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            width: 88%;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: block;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .menu-lateral .logout-button:hover {
+            background-color: #218838; 
+        }
+        
         .main-content {margin-left: 250px;
                     padding: 20px;
                     min-height: 100vh;
@@ -127,9 +156,39 @@
 <body>
 
     <div class="menu-lateral">
-        <a href="añadircoches.html">Añadir Coche</a>
-        <a href="borrarcoches.php">Borrar Coche</a>
-        <a href="listarcoches.php">Listar Coches</a>
+        <button class="main-button" onclick="location.href='../2index.php'">Ir a la Principal</button>
+
+        <div class="dropdown">
+            <a href="javascript:void(0)">Coches</a>
+            <div class="dropdown-content">
+                <a href="añadircoches.html">Añadir Coche</a>
+                <a href="listarcoches.php">Listar Coches</a>
+                <a href="buscarcoches.html">Buscar Coche</a>
+                <a href="modificarcoches.html">Modificar Coche</a>
+                <a href="borrarcoches.php">Borrar Coche</a>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <a href="javascript:void(0)">Usuarios</a>
+            <div class="dropdown-content">
+                <a href="../usuarios/añadirusuarios.html">Añadir Usuario</a>
+                <a href="../usuarios/listarusuarios.php">Listar Usuarios</a>
+                <a href="../usuarios/buscarusuarios.html">Buscar Usuario</a>
+                <a href="../usuarios/modificarusuarios.html">Modificar Usuario</a>
+                <a href="../usuarios/borrarusuarios.php">Borrar Usuario</a>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <a href="javascript:void(0)">Alquileres</a>
+            <div class="dropdown-content">
+                <a href="../alquileres/listaralquileres.php">Listar Alquileres</a>
+                <a href="../alquileres/borraralquileres.php">Borrar Alquileres</a>
+            </div>
+        </div>
+        <a href="../../logout.php" class="logout-button">🚪 Cerrar Sesión</a>
+
     </div>
 
     <div class="main-content">

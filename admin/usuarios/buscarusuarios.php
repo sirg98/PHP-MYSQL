@@ -1,9 +1,18 @@
+<?php
+session_start();
+
+
+if (!isset($_SESSION['id_usuario'])) {
+    header("Location: login.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modificar Coche</title>
+    <title>Buscar Usuario</title>
     <style>
 
         body {
@@ -12,17 +21,10 @@
             background-size: cover;
             color: #FFFFFF;
             margin: 0;
+            padding: 0;
             display: flex;
             min-height: 100vh;
-        }
-
-        h1 {
-            font-size: 2rem;
-            color: #ffffff;
-            text-align: center;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+            flex-direction: column;
         }
 
         .menu-lateral {
@@ -64,6 +66,18 @@
             display: block;
         }
 
+        .menu-lateral .dropdown a {
+            padding: 15px;
+            font-size: 1.2rem;
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid #6A0DAD;
+        }
+
+        .menu-lateral .dropdown a:hover {
+            background-color: #8A2BE2;
+        }
+
         .menu-lateral .main-button {
             background-color: #6A0DAD;
             color: #fff;
@@ -81,29 +95,56 @@
             background-color: #8A2BE2;
         }
 
+        .menu-lateral .logout-button {
+            background-color: #28A745; 
+            color: #fff;
+            font-size: 1.2rem;
+            text-align: center;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            width: 88%;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: block;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .menu-lateral .logout-button:hover {
+            background-color: #218838; 
+        }
+        
         .main-content {
             margin-left: 250px;
             padding: 20px;
+            min-height: 100vh;
             flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #FFFFFF;
+            text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
         }
 
         form {
-            background-color: rgba(29, 29, 29, 0.9);
+            background-color: #1D1D1D;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 400px;
-            display: flex;
-            flex-direction: column;
+            margin: 0 auto;
         }
 
         label {
             font-size: 1rem;
             color: #FFFFFF;
+            display: block;
             margin-bottom: 5px;
         }
 
@@ -132,24 +173,33 @@
         }
 
         input[type="submit"]:hover {
-            background-color: #8A2BE2;
+            background-color: #8A2BE2; 
             transform: scale(1.05);
         }
 
         @media (max-width: 768px) {
             .menu-lateral {
                 width: 200px;
+                padding-top: 10px;
             }
 
             .main-content {
                 margin-left: 0;
-                padding: 10px;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            form {
+                padding: 20px;
             }
 
             input[type="submit"] {
                 font-size: 0.9rem;
             }
         }
+
     </style>
 </head>
 <body>
@@ -160,22 +210,22 @@
         <div class="dropdown">
             <a href="javascript:void(0)">Coches</a>
             <div class="dropdown-content">
-                <a href="añadircoches.html">Añadir Coche</a>
-                <a href="listarcoches.php">Listar Coches</a>
-                <a href="buscarcoches.html">Buscar Coche</a>
-                <a href="modificarcoches.html">Modificar Coche</a>
-                <a href="borrarcoches.php">Borrar Coche</a>
+                <a href="../coches/añadircoches.html">Añadir Coche</a>
+                <a href="../coches/listarcoches.php">Listar Coches</a>
+                <a href="../coches/buscarcoches.html">Buscar Coche</a>
+                <a href="../coches/modificarcoches.html">Modificar Coche</a>
+                <a href="../coches/borrarcoches.php">Borrar Coche</a>
             </div>
         </div>
 
         <div class="dropdown">
             <a href="javascript:void(0)">Usuarios</a>
             <div class="dropdown-content">
-                <a href="../usuarios/añadirusuarios.html">Añadir Usuario</a>
-                <a href="../usuarios/listarusuarios.php">Listar Usuarios</a>
-                <a href="../usuarios/buscarusuarios.html">Buscar Usuario</a>
-                <a href="../usuarios/modificarusuarios.html">Modificar Usuario</a>
-                <a href="../usuarios/borrarusuarios.php">Borrar Usuario</a>
+                <a href="añadirusuarios.html">Añadir Usuario</a>
+                <a href="listarusuarios.php">Listar Usuarios</a>
+                <a href="buscarusuarios.html">Buscar Usuario</a>
+                <a href="modificarusuarios.html">Modificar Usuario</a>
+                <a href="borrarusuarios.php">Borrar Usuario</a>
             </div>
         </div>
 
@@ -186,22 +236,27 @@
                 <a href="../alquileres/borraralquileres.php">Borrar Alquileres</a>
             </div>
         </div>
+        <a href="../../logout.php" class="logout-button">🚪 Cerrar Sesión</a>
+
     </div>
 
     <div class="main-content">
-        <form action="modificarcoches2.php" method="post">
-            <h1>Modificar Coche</h1>
-            <label for="marca">Marca: </label>
-            <input type="text" name="marca" id="marca">
-            
-            <label for="modelo">Modelo: </label>
-            <input type="text" name="modelo" id="modelo">
+        
 
-            <label for="color">Color: </label>
-            <input type="text" name="color" id="color">
+        <form action="buscarusuarios2.php" method="post">
+            <h2>Buscar Usuario</h2>
+            <label for="nombre">Nombre: </label>
+            <input type="text" name="nombre" id="nombre"><br><br>
 
-            <input type="submit" value="Modificar">
+            <label for="apellidos">Apellidos: </label>
+            <input type="text" name="apellidos" id="apellidos"><br><br>
+
+            <label for="dni">DNI: </label>
+            <input type="text" name="dni" id="dni"><br><br>
+
+            <input type="submit" value="Buscar">
         </form>
     </div>
+
 </body>
 </html>

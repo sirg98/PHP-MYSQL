@@ -1,9 +1,17 @@
-<!DOCTYPE html>
+<?php
+session_start();
+
+
+if (!isset($_SESSION['id_usuario'])) {
+    header("Location: login.php");
+    exit();
+}
+?><!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modificar Usuario</title>
+    <title>AÑADIR USUARIO</title>
     <style>
 
         body {
@@ -12,17 +20,10 @@
             background-size: cover;
             color: #FFFFFF;
             margin: 0;
+            padding: 0;
             display: flex;
             min-height: 100vh;
-        }
-
-        h1 {
-            font-size: 2rem;
-            color: #ffffff;
-            text-align: center;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+            flex-direction: column;
         }
 
         .menu-lateral {
@@ -64,6 +65,18 @@
             display: block;
         }
 
+        .menu-lateral .dropdown a {
+            padding: 15px;
+            font-size: 1.2rem;
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid #6A0DAD;
+        }
+
+        .menu-lateral .dropdown a:hover {
+            background-color: #8A2BE2;
+        }
+
         .menu-lateral .main-button {
             background-color: #6A0DAD;
             color: #fff;
@@ -81,33 +94,60 @@
             background-color: #8A2BE2;
         }
 
+        .menu-lateral .logout-button {
+            background-color: #28A745; 
+            color: #fff;
+            font-size: 1.2rem;
+            text-align: center;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            width: 88%;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: block;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .menu-lateral .logout-button:hover {
+            background-color: #218838; 
+        }
+        
         .main-content {
             margin-left: 250px;
             padding: 20px;
+            min-height: 100vh;
             flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
+        h2 {
+            font-size: 2rem;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        
         form {
-            background-color: rgba(29, 29, 29, 0.9);
+            background-color: rgba(29, 29, 29, 0.9); 
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 400px;
-            display: flex;
-            flex-direction: column;
+            margin: 0 auto;
         }
 
         label {
             font-size: 1rem;
             color: #FFFFFF;
+            display: block;
             margin-bottom: 5px;
         }
 
-        input[type="text"] {
+        input[type="text"], input[type="password"] {
             width: 100%;
             padding: 10px 12px;
             margin-bottom: 20px;
@@ -132,24 +172,33 @@
         }
 
         input[type="submit"]:hover {
-            background-color: #8A2BE2;
+            background-color: #8A2BE2; 
             transform: scale(1.05);
         }
 
         @media (max-width: 768px) {
             .menu-lateral {
                 width: 200px;
+                padding-top: 10px;
             }
 
             .main-content {
                 margin-left: 0;
-                padding: 10px;
+            }
+
+            form {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 1.8rem;
             }
 
             input[type="submit"] {
                 font-size: 0.9rem;
             }
         }
+
     </style>
 </head>
 <body>
@@ -186,23 +235,33 @@
                 <a href="../alquileres/borraralquileres.php">Borrar Alquileres</a>
             </div>
         </div>
-    </div>
+        <a href="../../logout.php" class="logout-button">🚪 Cerrar Sesión</a>
 
+    </div>
 
     <div class="main-content">
-        <form action="modificarusuarios2.php" method="post">
-            <h1>Modificar Usuario</h1>
+        
+        <form action="añadirusuarios2.php" method="post">
+            <h2>Añadir Usuario</h2>
             <label for="nombre">Nombre: </label>
-            <input type="text" name="nombre" id="nombre">
-            
-            <label for="apellidos">Apellidos: </label>
-            <input type="text" name="apellidos" id="apellidos">
+            <input type="text" name="nombre" id="nombre" required><br><br>
 
-            <label for="dni">DNI: </label>
-            <input type="text" name="dni" id="dni">
+            <label for="apellidos">Apellidos:</label>
+            <input type="text" name="apellidos" id="apellidos" required><br><br>
+        
+            <label for="dni">DNI:</label>
+            <input type="text" name="dni" id="dni" required><br><br>
 
-            <input type="submit" value="Modificar">
+            <label for="password">Contraseña:</label>
+            <input type="password" name="password" id="password" required><br><br>
+
+            <label for="saldo">Saldo:</label>
+            <input type="text" name="saldo" id="saldo" required><br><br>
+
+            <input type="submit" value="Insertar">
+
         </form>
     </div>
+    
 </body>
 </html>

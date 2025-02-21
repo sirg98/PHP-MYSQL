@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+$id = $_SESSION['id_usuario'];
+
+if (!isset($_SESSION['nombre'])) {
+    header("Location: login.php"); 
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,10 +22,7 @@
             margin: 0;
             padding: 0;
             display: flex;
-            min-height: 100vh;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;}
+            min-height: 100vh;}
 
         .menu-lateral {background-color: #1D1D1D;
                     width: 250px;
@@ -25,32 +32,23 @@
                     height: 100%;
                     padding-top: 20px;
                     z-index: 1000;
-                    border-right: 2px solid #6A0DAD;}
+                    border-right: 2px solid #6A0DAD;
+                    text-align: center;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;}
 
         .menu-lateral a {display: block;
+                        width: 90%;
                         padding: 15px;
                         text-decoration: none;
                         color: #fff;
                         font-size: 1.2rem;
-                        border-bottom: 1px solid #6A0DAD;}
+                        border-bottom: 1px solid #6A0DAD;
+                        text-align: center;
+                        border-radius: 5px;}
 
         .menu-lateral a:hover {background-color: #8A2BE2;}
-
-        .menu-lateral .dropdown-content {display: none;
-                                        background-color: #333;
-                                        border-left: 3px solid #6A0DAD;}
-
-        .menu-lateral .dropdown-content a {padding-left: 30px;}
-
-        .menu-lateral .dropdown:hover .dropdown-content {display: block;}
-
-        .menu-lateral .dropdown a {padding: 15px;
-                                    font-size: 1.2rem;
-                                    color: white;
-                                    text-decoration: none;
-                                    border-bottom: 1px solid #6A0DAD;}
-
-        .menu-lateral .dropdown a:hover {background-color: #8A2BE2;}
 
         .menu-lateral .main-button {background-color: #6A0DAD;
                                     color: #fff;
@@ -59,14 +57,43 @@
                                     border: none;
                                     padding: 15px;
                                     cursor: pointer;
-                                    width: 100%;
-                                    margin-bottom: 20px;
-                                    border-radius: 5px;}
+                                    width: 90%;
+                                    margin: 10px 0;
+                                    border-radius: 5px;
+                                    display: block;
+                                    text-decoration: none;}
 
         .menu-lateral .main-button:hover {background-color: #8A2BE2;}
 
+        .menu-lateral .logout-button {
+            background-color: #28A745;
+            color: #fff;
+            font-size: 1.2rem;
+            text-align: center;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            width: 90%;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: block;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .menu-lateral .logout-button:hover {
+            background-color: #218838;
+        }
+
+        .main-content {margin-left: 250px;
+                    padding: 20px;
+                    min-height: 100vh;
+                    flex-grow: 1;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;}
+
         .message-container {text-align: center;
-                            margin-top: 50px;
                             padding: 20px;
                             background-color: rgba(29, 29, 29, 0.8); 
                             border-radius: 10px;
@@ -93,19 +120,23 @@
 
         .back-link:hover {background-color: #8A2BE2;
                         transform: scale(1.05);}
-                        
+
     </style>
 </head>
 <body>
 
 <div class="menu-lateral">
-        <a href="añadircoches.html">Añadir Coche</a>
-        <a href="borrarcoches.php">Borrar Coche</a>
-        <a href="listarcoches.php">Listar Coches</a>
-    </div>
+    <a href="3index.php" class="main-button">🏠 Volver al Inicio</a>
+    <a href="añadircoches.php">Añadir Coche</a>
+    <a href="borrarcoches.php">Borrar Coche</a>
+    <a href="listarcoches.php">Listar Coches</a>
+    <a href="editar_usuario.php">Editar Usuario</a>
 
+    <a href="../logout.php" class="logout-button">🚪 Cerrar Sesión</a>
+</div>
+
+<div class="main-content">
     <?php
-
         $servername = "localhost";
         $username = "root";
         $password = "rootroot";
@@ -126,8 +157,8 @@
 
         $alquilado = ($_REQUEST['alquilado'] === "si") ? 1 : 0;
 
-        $sql = "INSERT INTO coches (modelo, marca, color, precio, alquilado, foto) 
-                VALUES ('$modelo', '$marca', '$color', '$precio', '$alquilado', '$foto')";
+        $sql = "INSERT INTO coches (modelo, marca, color, precio, alquilado, foto, propietario) 
+                VALUES ('$modelo', '$marca', '$color', '$precio', '1', '$foto', '$id')";
 
         echo "<div class='message-container'>";
         if (mysqli_query($conn, $sql)) 
@@ -158,7 +189,7 @@
                 } 
                 else 
                 {
-                    echo "Hubo un error al subir el archivo.";
+                    echo "<p class='error-message'>Hubo un error al subir el archivo.</p>";
                 }
             } 
             else 
@@ -170,13 +201,12 @@
         {
             echo "<p class='error-message'>Error al insertar el coche: " . mysqli_error($conn). "</p>";
         }
-        
 
         mysqli_close($conn);
-        echo "<a href='añadircoches.html' class='back-link'>Volver al menú</a>";
+        echo "<a href='añadircoches.php' class='back-link'>Volver al menú</a>";
         echo "</div>";
-
     ?>
+</div>
 
 </body>
 </html>

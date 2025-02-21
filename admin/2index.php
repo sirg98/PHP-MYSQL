@@ -1,9 +1,9 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-session_start(); // Iniciar sesión
+session_start(); 
 
-// Verificar si el usuario está autenticado
+
 if (!isset($_SESSION['nombre'])) {
     header("Location: login.php?error=Debe iniciar sesión");
     exit();
@@ -44,19 +44,23 @@ $nombre = $_SESSION['nombre'];
             text-transform: uppercase;
         }
 
-        .logout {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            background-color: red;
-            padding: 10px;
+        .menu-lateral .main-button {
+            background-color: #6A0DAD;
+            color: #fff;
+            font-size: 1.2rem;
+            text-align: center;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            width: 88%;
+            margin: 10px 0;
             border-radius: 5px;
+            display: block;
+            text-decoration: none;
         }
 
-        .logout a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
+        .menu-lateral .main-button:hover {
+            background-color: #8A2BE2;
         }
 
         .menu-lateral {
@@ -98,6 +102,26 @@ $nombre = $_SESSION['nombre'];
             display: block;
         }
 
+        .menu-lateral .logout-button {
+            background-color: #28A745; 
+            color: #fff;
+            font-size: 1.2rem;
+            text-align: center;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            width: 88%;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: block;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .menu-lateral .logout-button:hover {
+            background-color: #218838; 
+        }
+
         .main-content {
             margin-left: 250px;
             padding: 20px;
@@ -130,12 +154,12 @@ $nombre = $_SESSION['nombre'];
 
     <header>
         <h1>¡Bienvenido, <?php echo htmlspecialchars($nombre); ?>!</h1>
-        <div class="logout">
-            <a href="logout.php">Cerrar sesión</a>
+
         </div>
     </header>
 
     <div class="menu-lateral">
+    <a href="2index.php" class="main-button">🏠 Volver al Inicio</a>
         <div class="dropdown">
             <a href="javascript:void(0)">Coches</a>
             <div class="dropdown-content">
@@ -165,6 +189,7 @@ $nombre = $_SESSION['nombre'];
                 <a href="alquileres/borraralquileres.php">Borrar Alquileres</a>
             </div>
         </div>
+        <a href="../logout.php" class="logout-button">🚪 Cerrar Sesión</a>
     </div>
 
     <div class="main-content">

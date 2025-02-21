@@ -1,22 +1,38 @@
+<?php
+session_start();
+
+
+if (!isset($_SESSION['id_usuario'])) {
+    header("Location: login.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BORRAR USUARIO</title>
+    <title>Listado de Usuarios</title>
+
     <style>
+
         body {
             font-family: 'Arial', sans-serif;
             background: url('../../img/deportivo.jpg') no-repeat center center fixed;
             background-size: cover;
             color: #FFFFFF;
             margin: 0;
-            padding: 0;
             display: flex;
             min-height: 100vh;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            color: #000000;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
         }
 
         .menu-lateral {
@@ -58,18 +74,6 @@
             display: block;
         }
 
-        .menu-lateral .dropdown a {
-            padding: 15px;
-            font-size: 1.2rem;
-            color: white;
-            text-decoration: none;
-            border-bottom: 1px solid #6A0DAD;
-        }
-
-        .menu-lateral .dropdown a:hover {
-            background-color: #8A2BE2;
-        }
-
         .menu-lateral .main-button {
             background-color: #6A0DAD;
             color: #fff;
@@ -87,43 +91,94 @@
             background-color: #8A2BE2;
         }
 
-        .message-container {
+        .menu-lateral .logout-button {
+            background-color: #28A745; 
+            color: #fff;
+            font-size: 1.2rem;
             text-align: center;
-            margin-top: 50px;
-            padding: 20px;
-            background-color: rgba(29, 29, 29, 0.8);
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .success-message {
-            font-size: 1.2rem;
-            color: #4CAF50;
-            margin-bottom: 20px;
-        }
-
-        .error-message {
-            font-size: 1.2rem;
-            color: #FF5722; 
-            margin-bottom: 20px;
-        }
-
-        .back-link {
-            display: inline-block;
-            padding: 10px 20px;
-            color: #FFFFFF;
-            background-color: #6A0DAD;
-            text-decoration: none;
-            font-size: 1rem;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            width: 88%;
+            margin: 10px 0;
             border-radius: 5px;
-            transition: background-color 0.3s, transform 0.2s;
+            display: block;
+            text-decoration: none;
+            font-weight: bold;
         }
 
-        .back-link:hover {
-            background-color: #8A2BE2;
-            transform: scale(1.05);
+        .menu-lateral .logout-button:hover {
+            background-color: #218838; 
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            background-color: #000000;
+            border-radius: 10px;
+            overflow: hidden;
+            color: #FFFFFF;
+            border: 1px solid #6a0dad;
+        }
+
+        th {
+            background-color: #6a0dad;
+            color: #ffffff;
+            padding: 15px;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #6a0dad;
+            text-align: left;
+            color: #FFFFFF;
+        }
+
+        tr:nth-child(even) {
+            background-color: #1a1a1a;
+        }
+
+        tr:hover {
+            background-color: #6a0dad;
+            color: #ffffff;
+        }
+
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #6a0dad;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #4e087b;
+        }
+
+        h1 + h1 {
+            font-size: 1.5rem;
+            text-align: center;
+            color: #cccccc;
+            margin-top: 50px;
         }
     </style>
 </head>
@@ -131,6 +186,7 @@
 
     <div class="menu-lateral">
         <button class="main-button" onclick="location.href='../2index.php'">Ir a la Principal</button>
+
         <div class="dropdown">
             <a href="javascript:void(0)">Coches</a>
             <div class="dropdown-content">
@@ -141,6 +197,7 @@
                 <a href="../coches/borrarcoches.php">Borrar Coche</a>
             </div>
         </div>
+
         <div class="dropdown">
             <a href="javascript:void(0)">Usuarios</a>
             <div class="dropdown-content">
@@ -151,6 +208,7 @@
                 <a href="borrarusuarios.php">Borrar Usuario</a>
             </div>
         </div>
+
         <div class="dropdown">
             <a href="javascript:void(0)">Alquileres</a>
             <div class="dropdown-content">
@@ -158,72 +216,54 @@
                 <a href="../alquileres/borraralquileres.php">Borrar Alquileres</a>
             </div>
         </div>
+        <a href="../../logout.php" class="logout-button">🚪 Cerrar Sesión</a>
+
     </div>
 
-    <?php
+    <div class="main-content">
+        <?php
 
-    $servername = "localhost";
-    $username = "root";
-    $password = "rootroot";
-    $dbname = "concesionario";
-    $id = $_REQUEST['id_coche'];
+        $servername = "localhost";
+        $username = "root";
+        $password = "rootroot";
+        $dbname = "concesionario";
 
-
-    $conn = mysqli_connect ($servername, $username, $password, $dbname);
-    if (!$conn)
-    {
-        die("Conexion fallida". mysqli_connect_error());
-    }
-
-    if (isset($_REQUEST['delete_ids']) && is_array($_REQUEST['delete_ids']))
-    {
-        $ids_to_delete = implode(",", array_map('intval', $_REQUEST['delete_ids']));
-        
-        $sql = "DELETE FROM usuarios WHERE id_usuario in ($ids_to_delete)";
-        echo "<div class='message-container'>";
-        if (mysqli_query($conn, $sql))
+        $conn = mysqli_connect($servername, $username, $password, $dbname);
+        if (!$conn) 
         {
-            echo "<p class='success-message'>Usuarios eliminados correctamente</p>";
+            die("Conexión fallida: " . mysqli_connect_error());
         }
+
+        $sql = "SELECT id_usuario, nombre, apellidos, dni FROM usuarios";
+        $result = mysqli_query($conn, $sql);
+
+        if (mysqli_num_rows($result) > 0)
+        {
+            echo "<h1>Listado de Usuarios</h1>";
+            echo "<form action='borrarusuarios3.php' method='post'>";
+            echo "<table>";
+            echo "<tr><th>Seleccionar</th><th>Nombre</th><th>Apellidos</th><th>DNI</th></tr>";
+
+            while ($row = mysqli_fetch_assoc($result)) 
+            {
+                echo "<tr>";
+                echo "<td><input type='checkbox' name='delete_ids[]' value='" . $row['id_usuario'] . "'></td>";
+                echo "<td>" . htmlspecialchars($row['nombre']) . "</td>";
+                echo "<td>" . htmlspecialchars($row['apellidos']) . "</td>";
+                echo "<td>" . htmlspecialchars($row['dni']) . "</td>";
+                echo "</tr>";
+            }
+
+            echo "</table><br>";
+            echo "<button type='submit'>Eliminar seleccionados</button>";
+            echo "</form>";
+        } 
         else 
         {
-            echo "<p class='error-message'>Error al eliminar usuarios: " . mysqli_error($conn) . "</p>";
+            echo "<h1>No hay usuarios disponibles</h1>";
         }
-    }
-    else
-    {
-        echo "<h1>No has seleccionado ningún usuario</h1>";
-    }
-    mysqli_close($conn);
-    echo "<a href='borrarusuarios.php' class='back-link'>Volver al listado</a>";
-    echo "</div>";
-?>
+        mysqli_close($conn);
+        ?>
+    </div>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

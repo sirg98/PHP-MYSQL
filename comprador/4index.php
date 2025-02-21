@@ -147,17 +147,16 @@ if (!isset($_SESSION['nombre'])) {
 
     <div class="menu-lateral">
         
-        <a href="3index.php" class="main-button">🏠 Volver al Inicio</a>
-        <a href="añadircoches.php">Añadir Coche</a>
-        <a href="borrarcoches.php">Borrar Coche</a>
-        <a href="listarcoches.php">Listar Coches</a>
+        <a href="4index.php" class="main-button">🏠 Volver al Inicio</a>
+        <a href="listarcoches.php">Listar Coches</a> 
+        <a href="mis_coches.php">Mis Coches</a>
         <a href="editar_usuario.php">Editar Usuario</a>
         <a href="../logout.php" class="logout-button">🚪 Cerrar Sesión</a>
     </div>
 
     <div class="main-content">
         <h2>Bienvenido al Concesionario</h2>
-        <p>En esta página podrás gestionar tus coches, podrás añadirlos, borrarlos y listarlos.</p>
+        <p>En esta página podrás alquilar todos nuestros coches disponibles.</p>
     </div>
 
 </body>

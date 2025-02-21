@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 
 
@@ -7,37 +6,14 @@ if (!isset($_SESSION['id_usuario'])) {
     header("Location: login.php");
     exit();
 }
-
-    $servername = "localhost";
-    $username = "root";
-    $password = "rootroot";
-    $dbname = "concesionario";
-    $id = $_REQUEST['id_coche'];
-
-    $conn = mysqli_connect($servername, $username, $password, $dbname);
-    if (!$conn) 
-    {
-        die("Conexión fallida: " . mysqli_connect_error());
-    }
-
-    $sql = "SELECT * FROM coches WHERE id_coche = '$id'";
-    
-    $result = mysqli_query($conn, $sql);
-
-    if (mysqli_num_rows($result) == 1) 
-    {
-        $row = mysqli_fetch_assoc($result);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actualizar Coche</title>
-
-    
+    <title>Modificar Coche</title>
     <style>
-
 
         body {
             font-family: 'Arial', sans-serif;
@@ -47,19 +23,16 @@ if (!isset($_SESSION['id_usuario'])) {
             margin: 0;
             display: flex;
             min-height: 100vh;
-            justify-content: center; 
-            align-items: center; 
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 2rem;
+            color: #ffffff;
             text-align: center;
-            color: #000000;
             margin-bottom: 20px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
         }
-
 
         .menu-lateral {
             background-color: #1D1D1D;
@@ -117,7 +90,6 @@ if (!isset($_SESSION['id_usuario'])) {
             background-color: #8A2BE2;
         }
 
-
         .menu-lateral .logout-button {
             background-color: #28A745; 
             color: #fff;
@@ -145,52 +117,67 @@ if (!isset($_SESSION['id_usuario'])) {
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
         }
 
         form {
-            background-color: #1a1a1a;
+            background-color: rgba(29, 29, 29, 0.9);
             padding: 30px;
             border-radius: 10px;
-            width: 50%;
-            margin: auto;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-        }
-
-        input, select {
-            width: 100%; 
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #6a0dad;
-            background-color: #333;
-            color: #fff;
-            box-sizing: border-box; 
-        }
-
-        input[type="submit"] {
-            background-color: #6a0dad;
-            color: #fff;
-            cursor: pointer;
-            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 100%;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #8a2be2;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
         }
 
         label {
-            font-size: 1.2rem;
-            color: #fff;
-            display: block; 
-            margin-bottom: 5px; 
+            font-size: 1rem;
+            color: #FFFFFF;
+            margin-bottom: 5px;
         }
 
-        .error {
-            color: red;
-            text-align: center;
-            font-size: 1.2rem;
+        input[type="text"] {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 20px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: #2D2D2D;
+            color: #FFFFFF;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #6A0DAD;
+            color: #FFFFFF;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #8A2BE2;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .menu-lateral {
+                width: 200px;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 10px;
+            }
+
+            input[type="submit"] {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -233,41 +220,19 @@ if (!isset($_SESSION['id_usuario'])) {
     </div>
 
     <div class="main-content">
-        <h1>Actualizar Coche</h1>
-        <form action="modificarcoches4.php" method="post">
-            <input type="text" readonly name="id_coche" value="<?php echo $row['id_coche']; ?>"><br><br>
-            <label for="marca">Marca:</label>
-            <input type="text" name="marca" value="<?php echo $row['marca']; ?>" required><br>
+        <form action="modificarcoches2.php" method="post">
+            <h1>Modificar Coche</h1>
+            <label for="marca">Marca: </label>
+            <input type="text" name="marca" id="marca">
             
-            <label for="modelo">Modelo:</label>
-            <input type="text" name="modelo" value="<?php echo $row['modelo']; ?>" required><br>
-            
-            <label for="color">Color:</label>
-            <input type="text" name="color" value="<?php echo $row['color']; ?>" required><br>
-            
-            <label for="precio">Precio:</label>
-            <input type="text" name="precio" value="<?php echo $row['precio']; ?>" required><br>
+            <label for="modelo">Modelo: </label>
+            <input type="text" name="modelo" id="modelo">
 
-            <label for="alquilado">Alquilado:</label>
-            <select name="alquilado">
-                <option value="1" <?php if ($row['alquilado'] == '1') echo 'selected'; ?> >Sí</option>
-                <option value="0" <?php if ($row['alquilado'] == '0') echo 'selected'; ?> >No</option>
-            </select><br>
+            <label for="color">Color: </label>
+            <input type="text" name="color" id="color">
 
-            <label for="foto">Foto:</label>
-            <input type="file" name="foto" value="<?php echo $row['foto']; ?>" ><br>
-
-            <input type="submit" value="Actualizar">
+            <input type="submit" value="Modificar">
         </form>
     </div>
 </body>
 </html>
-<?php
-    } 
-    else 
-    {
-        echo "<div class='no-results'>No se encontró el coche.</div>";
-    }
-
-    mysqli_close($conn);
-?>

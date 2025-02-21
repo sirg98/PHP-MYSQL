@@ -1,9 +1,18 @@
+<?php
+session_start();
+
+
+if (!isset($_SESSION['id_usuario'])) {
+    header("Location: login.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscar Usuario</title>
+    <title>Modificar Usuario</title>
     <style>
 
         body {
@@ -12,10 +21,17 @@
             background-size: cover;
             color: #FFFFFF;
             margin: 0;
-            padding: 0;
             display: flex;
             min-height: 100vh;
-            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
         }
 
         .menu-lateral {
@@ -57,18 +73,6 @@
             display: block;
         }
 
-        .menu-lateral .dropdown a {
-            padding: 15px;
-            font-size: 1.2rem;
-            color: white;
-            text-decoration: none;
-            border-bottom: 1px solid #6A0DAD;
-        }
-
-        .menu-lateral .dropdown a:hover {
-            background-color: #8A2BE2;
-        }
-
         .menu-lateral .main-button {
             background-color: #6A0DAD;
             color: #fff;
@@ -86,36 +90,49 @@
             background-color: #8A2BE2;
         }
 
+        .menu-lateral .logout-button {
+            background-color: #28A745; 
+            color: #fff;
+            font-size: 1.2rem;
+            text-align: center;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            width: 88%;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: block;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .menu-lateral .logout-button:hover {
+            background-color: #218838; 
+        }
+        
         .main-content {
             margin-left: 250px;
             padding: 20px;
-            min-height: 100vh;
             flex-grow: 1;
-        }
-
-        h2 {
-            font-size: 2rem;
-            color: #FFFFFF;
-            text-align: center;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         form {
-            background-color: #1D1D1D;
+            background-color: rgba(29, 29, 29, 0.9);
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 400px;
-            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
         }
 
         label {
             font-size: 1rem;
             color: #FFFFFF;
-            display: block;
             margin-bottom: 5px;
         }
 
@@ -144,33 +161,24 @@
         }
 
         input[type="submit"]:hover {
-            background-color: #8A2BE2; 
+            background-color: #8A2BE2;
             transform: scale(1.05);
         }
 
         @media (max-width: 768px) {
             .menu-lateral {
                 width: 200px;
-                padding-top: 10px;
             }
 
             .main-content {
                 margin-left: 0;
-            }
-
-            h2 {
-                font-size: 2rem;
-            }
-
-            form {
-                padding: 20px;
+                padding: 10px;
             }
 
             input[type="submit"] {
                 font-size: 0.9rem;
             }
         }
-
     </style>
 </head>
 <body>
@@ -207,25 +215,25 @@
                 <a href="../alquileres/borraralquileres.php">Borrar Alquileres</a>
             </div>
         </div>
+        <a href="../../logout.php" class="logout-button">🚪 Cerrar Sesión</a>
+
     </div>
+
 
     <div class="main-content">
-        
-
-        <form action="buscarusuarios2.php" method="post">
-            <h2>Buscar Usuario</h2>
+        <form action="modificarusuarios2.php" method="post">
+            <h1>Modificar Usuario</h1>
             <label for="nombre">Nombre: </label>
-            <input type="text" name="nombre" id="nombre"><br><br>
-
+            <input type="text" name="nombre" id="nombre">
+            
             <label for="apellidos">Apellidos: </label>
-            <input type="text" name="apellidos" id="apellidos"><br><br>
+            <input type="text" name="apellidos" id="apellidos">
 
             <label for="dni">DNI: </label>
-            <input type="text" name="dni" id="dni"><br><br>
+            <input type="text" name="dni" id="dni">
 
-            <input type="submit" value="Buscar">
+            <input type="submit" value="Modificar">
         </form>
     </div>
-
 </body>
 </html>
